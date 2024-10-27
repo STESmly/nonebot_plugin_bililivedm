@@ -20,12 +20,10 @@ __plugin_meta__ = PluginMetadata(
     usage="",
 
     type="application",
-    # 发布必填，当前有效类型有：`library`（为其他插件编写提供功能），`application`（向机器人用户提供功能）。
 
     homepage="https://github.com/STESmly/nonebot_plugin_bililivedm",
-    # 发布必填。
 
-    supported_adapters={},
+    supported_adapters=None,
 )
 
 session: Optional[aiohttp.ClientSession] = None
