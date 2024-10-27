@@ -25,7 +25,7 @@ __plugin_meta__ = PluginMetadata(
     homepage="https://github.com/STESmly/nonebot_plugin_bililivedm",
     # 发布必填。
 
-    supported_adapters={},
+    supported_adapters=None,
 )
 
 session: Optional[aiohttp.ClientSession] = None
