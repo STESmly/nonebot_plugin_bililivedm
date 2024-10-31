@@ -10,7 +10,7 @@ from nonebot.plugin import PluginMetadata
 import aiohttp
 from . import blivedm
 from .blivedm.models import web as web_models
-from .send_ruler import send_ruler
+from .send_ruler import send_data
 import threading
 from .Config import Config
 
@@ -88,7 +88,7 @@ async def send(client, data, msgtype):
         logger.opt(colors=True).success(
         f"<fg #551A8B>bilidmchat v0.0.1 </fg #551A8B>| [bililive.message]: Message from {data.uid}@[昵称:{data.uname} 房间号:{client.room_id}] '{data.msg}'"
         )
-        await send_ruler(client, data, msgtype)
+        await send_data(client, data, msgtype)
     elif msgtype == "gift":
         if data.coin_type == "gold":
             res = "金"
@@ -105,7 +105,7 @@ async def send(client, data, msgtype):
         logger.opt(colors=True).success(
         f"<fg #551A8B>bilidmchat v0.0.1 </fg #551A8B>| [bililive.superchat]: superchat from {data.uid}@[昵称:{data.uname} 房间号:{client.room_id} 价值:{data.price}RMB] <blue>醒目留言： {data.message}</blue>"
         )
-        await send_ruler(client, data, msgtype)
+        await send_data(client, data, msgtype)
 
 
 class MyHandler(blivedm.BaseHandler):
