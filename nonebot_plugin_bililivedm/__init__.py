@@ -5,27 +5,26 @@ import random
 import threading
 from typing import *
 from nonebot.log import logger
-import nonebot
+from nonebot import get_plugin_config
 from nonebot.plugin import PluginMetadata
 import aiohttp
-
 from . import blivedm
 from .blivedm.models import web as web_models
 from .send_ruler import send_ruler
 import threading
+from .Config import Config
 
 __plugin_meta__ = PluginMetadata(
     name="b站弹幕监控",
     description="基于ws的b站弹幕监控",
     usage="",
-
+    config=Config,
     type="application",
-
     homepage="https://github.com/STESmly/nonebot_plugin_bililivedm",
-
     supported_adapters=None,
 )
 
+SESSDATA:str = get_plugin_config(Config).bilitoken
 session: Optional[aiohttp.ClientSession] = None
     
 async def main():
@@ -134,14 +133,14 @@ class MyHandler(blivedm.BaseHandler):
 def run_main():
     asyncio.run(main())
 try:
-    if nonebot.get_driver().config.bililivedown == "on":
+    if get_plugin_config(Config).bililivedown == "on":
         thread1 = threading.Thread(target=run_main)
         thread1.start()
 
 # 直播间ID的取值看直播间URL
         try:
-            if nonebot.get_driver().config.bililiveid:
-                TEST_ROOM_IDS = nonebot.get_driver().config.bililiveid
+            if get_plugin_config(Config).bililiveid:
+                TEST_ROOM_IDS: list = get_plugin_config(Config).bililiveid
                 logger.opt(colors=True).success(
                 f"<yellow>监听直播间弹幕配置</yellow> <green>bililiveid</green> <blue>初始化成功</blue>"
                 )
@@ -156,23 +155,5 @@ try:
             logger.opt(colors=True).warning(
                 f"<yellow>监听直播间弹幕配置</yellow> <green>bililiveid</green> <red>未被配置！</red>"
                 )
-            
-        try:
-            if nonebot.get_driver().config.bililiveid:
-                SESSDATA = nonebot.get_driver().config.bilitoken
-                logger.opt(colors=True).success(
-                f"<yellow>b站账号配置</yellow> <green>bilitoken</green> <blue>初始化成功</blue>"
-                )
-            
-            else:
-                SESSDATA=""
-                logger.opt(colors=True).warning(
-                f"<yellow>b站账号配置</yellow> <green>bilitoken</green> <red>未被配置！</red>"
-                )
-        except AttributeError:
-            SESSDATA=""
-            logger.opt(colors=True).warning(
-                f"<yellow>b站账号配置</yellow> <green>bilitoken</green> <red>未被配置！</red>"
-                ) 
 except AttributeError:
     pass

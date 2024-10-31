@@ -54,18 +54,17 @@ _✨ NoneBot 插件描述 ✨_
 请在.env文件里面这样配置
 
 ```bash
-bililiveid=[b站直播间id] 
+bililiveid=[b站直播间id] ##默认为[]
 bilitoken=  ##这里填一个已登录账号的cookie的SESSDATA字段的值。不填也可以连接，但是收到弹幕的用户名会打码，UID会变成0
-bililivedown=on ##是否开启b站直播间弹幕监听功能，on为开启，其他为关闭
-bilidmj=on ##是否开启b站直播间弹幕显示器，on为开启，其他为关闭
-loadws= ##是否开启websocket功能，默认为ws://127.0.0.1:8000/onebot/v11/ws
+bililivedown=on ##是否开启b站直播间弹幕监听功能，on为开启，其他为关闭,默认为on
+loadws= ##是否开启websocket功能，默认为ws://127.0.0.1:8000/bilidm
 
 ```
 
 ## 如何使用b站弹幕功能
 
 在.env文件里面配置好之后，在你自己的py文件里面这样使用ws
-以默认的ws://127.0.0.1:8000/onebot/v11/ws为例
+以默认的ws://127.0.0.1:8000/bilidm为例
 
 ```bash
 from aiohttp import web
@@ -87,7 +86,7 @@ async def websocket_handler(request):  ##千万别在这里使用async def webso
 
 def run_app():
     app = web.Application()
-    app.router.add_get("/onebot/v11/ws", websocket_handler)
+    app.router.add_get("/bilidm", websocket_handler)
     web.run_app(app, host="127.0.0.1", port=8000,print=None)
 
 # 在主线程中创建一个子线程，防止卡住nb进程（或者用py单独运行个.py文件也行）
