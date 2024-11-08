@@ -132,6 +132,7 @@ class MyHandler(blivedm.BaseHandler):
 
 def run_main():
     asyncio.run(main())
+    
 try:
     if get_plugin_config(Config).bililivedown == "on":
         thread1 = threading.Thread(target=run_main)
@@ -139,19 +140,23 @@ try:
 
 # 直播间ID的取值看直播间URL
         try:
-            if get_plugin_config(Config).bililiveid:
+            if len(get_plugin_config(Config).bililiveid) != 0:
                 TEST_ROOM_IDS: list = get_plugin_config(Config).bililiveid
                 logger.opt(colors=True).success(
                 f"<yellow>监听直播间弹幕配置</yellow> <green>bililiveid</green> <blue>初始化成功</blue>"
                 )
             
             else:
-                TEST_ROOM_IDS=[]
+                TEST_ROOM_IDS=[
+                    None
+                ]
                 logger.opt(colors=True).warning(
                 f"<yellow>监听直播间弹幕配置</yellow> <green>bililiveid</green> <red>未被配置！</red>"
                 )
         except AttributeError:
-            TEST_ROOM_IDS=[]
+            TEST_ROOM_IDS=[
+                None
+            ]
             logger.opt(colors=True).warning(
                 f"<yellow>监听直播间弹幕配置</yellow> <green>bililiveid</green> <red>未被配置！</red>"
                 )

@@ -26,7 +26,7 @@ except AttributeError:
     pass
 
 
-async def send_data(event, msg,type):
+async def send_data(event, msg,msg_type):
     url = allowedws
     async with aiohttp.ClientSession() as session:
         async with session.ws_connect(url) as ws:
@@ -38,7 +38,7 @@ async def send_data(event, msg,type):
                     "nickname": f"{msg.uname}",
                     "message": f"{msg.msg}",
                     "room_id": event.room_id,
-                    "type": type,
+                    "type": msg_type,
                     "price":price
                     }
             await ws.send_json(data)
