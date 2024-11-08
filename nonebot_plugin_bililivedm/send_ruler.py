@@ -26,19 +26,24 @@ except AttributeError:
     pass
 
 
-async def send_data(event, msg,msg_type):
+async def send_data(event, msg,type):
     url = allowedws
     async with aiohttp.ClientSession() as session:
-        async with session.ws_connect(url) as ws:
-            if hasattr(msg, 'price'):
-                price = msg.price
-            else:
-                price = 0
-            data = {"user_id": msg.uid, 
-                    "nickname": f"{msg.uname}",
-                    "message": f"{msg.msg}",
-                    "room_id": event.room_id,
-                    "type": msg_type,
-                    "price":price
-                    }
-            await ws.send_json(data)
+        try:
+            async with session.ws_connect(url) as ws:
+                if hasattr(msg, 'price'):
+                    price = msg.price
+                else:
+                    price = 0
+                data = {"user_id": msg.uid, 
+                        "nickname": f"{msg.uname}",
+                        "message": f"{msg.msg}",
+                        "room_id": event.room_id,
+                        "type": type,
+                        "price":price
+                        }
+                await ws.send_json(data)
+        except aiohttp.client_exceptions.ClientConnectorError:
+            logger.opt(colors=True).warning(
+                f"<yellow>事件响应地址</yellow> <green>{url}</green> <red>连接被拒绝！</red>"
+                )
