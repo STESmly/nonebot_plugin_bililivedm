@@ -3,11 +3,13 @@ import aiohttp
 from nonebot import get_plugin_config
 from .Config import Config
 
+bldm_config = get_plugin_config(Config)
+
 try:
-    if get_plugin_config(Config).bililivedown == "on":
+    if bldm_config.bililivedown == "on":
         allowedws = False 
         try:
-            if ws := get_plugin_config(Config).loadws:
+            if ws := bldm_config.loadws:
                 allowedws = ws
                 logger.opt(colors=True).success(
                 f"<yellow>事件响应地址</yellow> <green>loadws</green> : <blue>{ws}</blue> 已配置"

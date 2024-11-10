@@ -24,7 +24,8 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters=None,
 )
 
-SESSDATA:str = get_plugin_config(Config).bilitoken
+bldm_config = get_plugin_config(Config)
+SESSDATA:str = bldm_config.bilitoken
 session: Optional[aiohttp.ClientSession] = None
     
 async def main():
@@ -134,14 +135,14 @@ def run_main():
     asyncio.run(main())
     
 try:
-    if get_plugin_config(Config).bililivedown == "on":
+    if bldm_config.bililivedown == "on":
         thread1 = threading.Thread(target=run_main)
         thread1.start()
 
 # 直播间ID的取值看直播间URL
         try:
-            if len(get_plugin_config(Config).bililiveid) != 0:
-                TEST_ROOM_IDS: list = get_plugin_config(Config).bililiveid
+            if len(bldm_config.bililiveid) != 0:
+                TEST_ROOM_IDS: list = bldm_config.bililiveid
                 logger.opt(colors=True).success(
                 f"<yellow>监听直播间弹幕配置</yellow> <green>bililiveid</green> <blue>初始化成功</blue>"
                 )
